@@ -1,0 +1,40 @@
+{
+  "name": "vr-funding",
+  "version": "1.0.0",
+  "description": "back-end build week project",
+  "main": "index.js",
+  "scripts": {
+    "test": "cross-env DB_ENV=testing jest --watch",
+    "server": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LambdaVRFunding/VR-Funding.git"
+  },
+  "author": "Cory Hale, Shawn Henry",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LambdaVRFunding/VR-Funding/issues"
+  },
+  "homepage": "https://github.com/LambdaVRFunding/VR-Funding#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "helmet": "^3.21.0",
+    "knex": "^0.19.3",
+    "sessions": "^0.0.2-7",
+    "sqlite3": "^4.1.0"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.1",
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.2",
+    "supertest": "^4.0.2"
+  }
+}

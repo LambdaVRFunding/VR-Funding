@@ -1,13 +1,24 @@
 
 exports.seed = function(knex) {
   // Deletes ALL existing entries
-  return knex('table_name').del()
+  return knex('projects').del()
     .then(function () {
       // Inserts seed entries
-      return knex('table_name').insert([
-        {id: 1, colName: 'rowValue1'},
-        {id: 2, colName: 'rowValue2'},
-        {id: 3, colName: 'rowValue3'}
+      return knex('projects').insert([
+        {
+          name: 'VR Gun Game',
+          description: 'Battle against your friends...',
+          dreamer_id: 1,
+          fund_target: 23000,
+          fund_current: 10
+        },
+        {
+          name: 'Dominate VR',
+          description: 'Don\'t just win, dominate the competition',
+          dreamer_id: 1,
+          fund_target: 12000,
+          fund_current: 3000
+        }
       ]);
     });
 };

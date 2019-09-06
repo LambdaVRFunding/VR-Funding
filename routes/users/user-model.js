@@ -4,7 +4,8 @@ module.exports = {
     addUser,
     findUser,
     getProjects,
-    getProjById
+    getProjById,
+    getProjByUserId
 }
 
 function addUser(user) {
@@ -19,6 +20,10 @@ function getProjects() {
   return db('projects');
 }
 
-function getProjById(user_id) {
+function getProjById(id) {
+  return db('projects').where(id);
+}
+
+function getProjByUserId(user_id) {
   return db('projects').where('dreamer_id', user_id);
 }

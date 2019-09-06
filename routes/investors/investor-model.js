@@ -13,24 +13,20 @@ function getTransactions(investor_id) {
 };
 
 function getFundedProjects(investor_id) {
-    return db('projects as p')
-        .join('transactions as t', 't.project_id', 'p.id')
-        .join('users as u', 'p.dreamer_id', 'u.id')
-        .select('p.id', 'p.name', 'p.description', 'u.name', 'p.fund_target', 'p.fund_current')
-        .where({ investor_id });
+    return db('projects as p');
 };
 
-function addFundsToProj(investor_id, proj_id, amount) {
+function addFundsToProj(investor_id, project_id, amount) {
     return db('transactions')
         .insert({ 
             investor_id: investor_id,
-            project_id: proj_id,
+            project_id: project_id,
             amount_funded: amount
         })
 }
 
-function updateProjectCurrentFunds(proj_id, amount) {
+function updateProjectCurrentFunds(id, amount) {
     return db('projects')
-        .where({ proj_id })
+        .where({ id })
         .update('fund_current', amount)
 }

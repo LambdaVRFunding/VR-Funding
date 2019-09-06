@@ -61,8 +61,8 @@ exports.up = function(knex) {
 
 exports.down = function(knex) {
   return knex.schema
-    .dropIfTableExists('transactions')
-    .dropIfTableExists('projects')
-    .dropIfTableExists('users')
-    .dropIfTableExists('user-types')
+    .dropTableIfExists('transactions')
+    .dropTableIfExists('projects')
+    .dropTableIfExists('users')
+    .dropTableIfExists('user-types')
 };

@@ -3,6 +3,7 @@ const db = require('../../data/dbConfig.js');
 module.exports = {
     addUser,
     findUser,
+    deleteUser,
     getProjects,
     getProjById,
     getProjByUserId
@@ -14,6 +15,10 @@ function addUser(user) {
 
 function findUser(filter) {
   return db('users').where(filter);
+}
+
+function deleteUser(email) {
+  return db('users').where('email', email).del();
 }
 
 function getProjects() {

@@ -15,7 +15,7 @@ exports.seed = function(knex) {
         {
           name: 'Dominate VR',
           description: 'Don\'t just win, dominate the competition',
-          dreamer_id: 1,
+          dreamer_id: 2,
           fund_target: 12000,
           fund_current: 3000
         }

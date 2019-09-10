@@ -3,55 +3,39 @@ const cors = require('cors');
 const helmet = require('helmet');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const secrets = require('./config/secrets'); // ADD SECRETS FILE
+const secrets = require('../config/secrets');
 
 const DreamerRouter = require('../routes/dreamers/dreamer-routes');
 const InvestorRouter = require('../routes/investors/investor-routes');
 const Users = require('../routes/users/user-model.js');
+
+const verify = require('../auth/authenticate-middleware');
 
 const server = express();
 
 server.use(helmet());
 server.use(cors());
 server.use(express.json());
-server.use('/api/dreamers', DreamerRouter);
-server.use('/api/investors', InvestorRouter);
+// server.use('/api/dreamers', DreamerRouter);
+// server.use('/api/investors', InvestorRouter);
 
 server.post('/register', async (req, res) => {
   const user = req.body;
   
   try {
     if (user.name && user.password && user.email) {
-      const password = bcrypt.hashSync(user.password, 5);
 
-      const hashUser = {
-        ...user,
-        type_id: 1,
-        password: password
-      }
+      const hash = bcrypt.hashSync(user.password, 10);
+      user.password = hash;
 
-      const addUser = await Users.addUser(hashUser);
+      const addUser = await Users.addUser(user);
 
       if (addUser) {
-        const tokenUser = {
-          id: addUser.id,
-          name: user.name,
-          email: user.email
-        }
-
-        const options = {
-          expiresIn: '3h'
-        }
-  
-        const token = jwt.sign(tokenUser, process.env.SECRET, options);
-
         res.status(201).json({
-          message: `Thank you ${user.name}. Your user had been created.`,
-          token
+          message: `Thank you ${user.name}. Your user had been created.`
         });
       }
     } else {
-
       res.status(400).json({
         message: 'All required fields not found'
       });
@@ -63,66 +47,95 @@ server.post('/register', async (req, res) => {
   }
 });
 
-// IN PROGRESS, needs to become middleware
-server.get('/login', async (req, res) => {
-  const creds = req.body;
-  const token = req.headers.token;
+server.post('/login', async (req, res) => {
+  const { email, password } = req.body;
   
   try {
-    if (creds.email && creds.password) {
-      const verified = jwt.verify(token, process.env.SECRET);
+    const [user] = await Users.findUser({ email });
+    
+    if (user && bcrypt.compareSync(password, user.password)) {
+      const token = genToken(user);
+      res.status(200).json({
+        message: `Welcome ${user.name}!`,
+        token
+      });
+    } else {
+      res.status(401).json({ message: 'Invalid Credentials' });
+    }    
+  } catch (err) {
+    res.status(500).json({
+      error: err.message
+    });
+  }
+});
 
-      if (verified) {
-        res.send('Logged In!');
-      } else {
-        res.status(403).json({
-          message: 'Invalid credentials'
-        })
+server.get('/projects', verify, async (req, res) => {
+  const type = req.decodedToken.type;
+  const id = req.decodedToken.subject;
+
+  try {
+    if (type === 1) {
+      const projects = await Users.getProjByUserId(id);
+      
+      if (projects) {
+        res.status(200).json(projects);
+      }
+    } else {
+      const projects = await Users.getProjects();
+
+      if (projects) {
+        res.status(200).json(projects);
       }
     }
   } catch(err) {
     res.status(500).json({
       error: err.message
-    })
+    });
   }
 });
 
-server.get('/projects', async (req, res) => {
+server.get('/projects/:id', verify, async (req, res) => {
+  const { id } = req.params;
+  const userId = req.decodedToken.subject;
+  const type = req.decodedToken.type;
+  
   try {
-    const projects = await Users.getProjects();
-
-    if (projects) {
-      res.status(200).json(projects);
-    }
-  } catch(err) {
-    res.status(500).json({
-      error: err.message
-    })
-  }
-});
-
-server.get('/projects/:id', async (req, res) => {
-  const id = req.params;
-
-  try {
-    const project = await Users.getProjById(id);
-
-    if (project) {
-      res.status(200).json(project);
+    const [project] = await Users.getProjById({ id });
+    
+    if (type === 1) {
+      if (project && project.dreamer_id === userId) {
+        res.status(200).json(project);
+      } else {
+        res.status(401).json({ message: `Cannot access this project.` });
+      }
     } else {
-      res.status(404).json({
-        message: 'The requested project was not found.'
-      })
+      res.status(200).json(project);
     }
-  } catch(err) {
-    res.status(500).json({
-      error: err.message
-    })
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
 
 server.get('/', (req, res) => {
   res.send('Welcome to the VR Funding API!');
 });
+
+// Generate Token Middleware
+
+function genToken(user) {
+  const payload = {
+    subject: user.id,
+    username: user.email,
+    type: user.type_id
+  };
+
+  const secret = secrets.jwtSecret;
+
+  const options = {
+    expiresIn: '3h'
+  }
+
+  return jwt.sign(payload, secret, options);
+}
 
 module.exports = server;

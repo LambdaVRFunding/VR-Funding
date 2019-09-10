@@ -6,6 +6,6 @@ router.post('/projects', async (req, res) => {
     const project = req.body;
 });
 
-router.put()
+// router.put()
 
 module.exports = router;

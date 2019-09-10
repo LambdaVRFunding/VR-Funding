@@ -3,6 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const secrets = require('./config/secrets'); // ADD SECRETS FILE
 
 const DreamerRouter = require('../routes/dreamers/dreamer-routes');
 const InvestorRouter = require('../routes/investors/investor-routes');

@@ -16,8 +16,8 @@ const server = express();
 server.use(helmet());
 server.use(cors());
 server.use(express.json());
-// server.use('/api/dreamers', DreamerRouter);
-// server.use('/api/investors', InvestorRouter);
+server.use('/api/dreamers', DreamerRouter);
+server.use('/api/investors', InvestorRouter);
 
 server.post('/register', async (req, res) => {
   const user = req.body;

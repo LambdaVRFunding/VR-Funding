@@ -10,14 +10,14 @@ exports.seed = function(knex) {
           password: '$2a$10$wIzKGBzxZdLla5hm4/9PLOo/SBKyz/r/8XLAWLhQjwcGoCtTF21eu',
           email: 'test@test.com',
           location: 'Testing Facility',
-          "type_id": 1
+          type_id: 1
         },
         {
           name: 'Fon Doo',
           password: '$2a$10$wIzKGBzxZdLla5hm4/9PLOo/SBKyz/r/8XLAWLhQjwcGoCtTF21eu',
           email: 'fondont@food.com',
           location: 'Testing Facility',
-          "type_id": 2
+          type_id: 2
         }
       ]);
     });

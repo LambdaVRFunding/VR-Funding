@@ -33,4 +33,6 @@ Trello - https://trello.com/b/t5k4cj9u/vr-funding
 **Investors** - Endpoints relating to investors
 - GET /api/investors/transactions **REQUIRES TOKEN** - Returns all current logged investor's transactions
 - POST /api/investors/transactions **REQUIRES TOKEN** - Sends transaction data for investor (not linked to processor)
+  1. Project_id
+  2. Amount_funded (funds in this transaction)
 - GET /api/investors/projects **REQUIRES TOKEN** - Returns all current logged investor's funded projects

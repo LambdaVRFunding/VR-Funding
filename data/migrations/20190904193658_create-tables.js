@@ -33,7 +33,7 @@ exports.up = function(knex) {
             .notNullable();
           proj.float('fund_current')
             .unsigned()
-            .notNullable();
+            .defaultTo(0);
         })
         .createTable('user-types', types => {
             types.increments();

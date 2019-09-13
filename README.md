@@ -19,8 +19,8 @@ Trello - https://trello.com/b/t5k4cj9u/vr-funding
 - POST /login **RETURNS TOKEN** - Login for users
   1. email
   2. password
-- GET /projects - Returns all projects the 'dreamer' has created or all projects for 'investors'
-- GET /projects/:id - Returns a specific project ('dreamer' can only see projects they submit)
+- GET /projects **REQUIRES TOKEN** - Returns all projects the 'dreamer' has created or all projects for 'investors'
+- GET /projects/:id **REQUIRES TOKEN** - Returns a specific project ('dreamer' can only see projects they submit)
 
 **Dreamers** - Endpoints relating to 'dreamers'
 - POST /api/dreamers/projects **REQUIRES TOKEN** - Creates project

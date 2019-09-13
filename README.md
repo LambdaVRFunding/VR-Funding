@@ -15,22 +15,22 @@ Trello - https://trello.com/b/t5k4cj9u/vr-funding
   1. name
   2. email
   3. password
-  4. type_id (identifies 'dreamer' or investor)
-- POST /login - Login for users
+  4. type_id (identifies 'dreamer' or 'investor')
+- POST /login **RETURNS TOKEN** - Login for users
   1. email
   2. password
-- GET /projects - Returns all projects
-- GET /projects/:id - Returns projects the 'dreamer' has created or all projects for investors
+- GET /projects - Returns all projects the 'dreamer' has created or all projects for 'investors'
+- GET /projects/:id - Returns a specific project ('dreamer' can only see projects they submit)
 
 **Dreamers** - Endpoints relating to 'dreamers'
-- POST /api/dreamers/projects - Creates project
+- POST /api/dreamers/projects **REQUIRES TOKEN** - Creates project
   1. name (project title)
   2. dreamer_id ('dreamer' id creating the project)
   3. fund_target (total funds asking to be raised)
-- PUT /api/dreamers/projects - Update project if current logged user is owner
-- DELETE /api/dreamers/projects - Delete project is current logged user is owner
+- PUT /api/dreamers/projects/:id **REQUIRES TOKEN** - Update project if current logged user is owner
+- DELETE /api/dreamers/projects/:id **REQUIRES TOKEN** - Delete project is current logged user is owner
 
 **Investors** - Endpoints relating to investors
-- GET /api/investors/transactions - Returns all current logged investor's transactions
-- POST /api/investors/transactions - Sends transaction data for investor (not linked to processor)
-- GET /api/investors/projects - Returns all current logged investor's funded projects
+- GET /api/investors/transactions **REQUIRES TOKEN** - Returns all current logged investor's transactions
+- POST /api/investors/transactions **REQUIRES TOKEN** - Sends transaction data for investor (not linked to processor)
+- GET /api/investors/projects **REQUIRES TOKEN** - Returns all current logged investor's funded projects

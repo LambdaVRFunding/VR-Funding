@@ -26,7 +26,9 @@ function getProjects() {
 }
 
 function getProjById(id) {
-  return db('projects').where(id);
+  return db('projects')
+    .select('*')
+    .where({id});
 }
 
 function getProjByUserId(user_id) {

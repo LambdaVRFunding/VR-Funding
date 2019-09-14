@@ -13,7 +13,11 @@ function getTransactions(investor_id) {
 };
 
 function getFundedProjects(investor_id) {
-    return db('projects as p');
+    return db('transactions as t')
+        .join('projects as p', 't.project_id', 'p.id')
+        .join('users as u', 'p.dreamer_id', 'u.id')
+        .where({ investor_id })
+        .distinct('p.project_name', 'p.description', 'u.name', 'p.fund_target', 'p.fund_current')
 };
 
 function addFundsToProj(investor_id, project_id, amount) {

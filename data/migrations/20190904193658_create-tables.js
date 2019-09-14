@@ -18,8 +18,8 @@ exports.up = function(knex) {
                 .inTable('user-types');
         })
         .createTable('projects', proj => {
-          proj.increments('id');
-          proj.string('name', 128)
+          proj.increments();
+          proj.string('project_name', 128)
             .unique()
             .notNullable();
           proj.text('description');
@@ -33,7 +33,7 @@ exports.up = function(knex) {
             .notNullable();
           proj.float('fund_current')
             .unsigned()
-            .notNullable();
+            .defaultTo(0);
         })
         .createTable('user-types', types => {
             types.increments();
